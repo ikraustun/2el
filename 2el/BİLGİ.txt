@@ -1,0 +1,62 @@
+ALTER PROCEDURE ustun.bilgi
+	
+AS
+declare @ay nvarchar(50)
+declare @yýl  nvarchar(50)
+declare @k int
+declare @a int
+declare @kp int
+declare @o int,@tarih1 nvarchar(50),@tarih2 nvarchar(50),@bas datetime,@son datetime
+declare @aktif_adet int,@tolga_r int,@emrah_r int,@suleyman_r int,@musa_r int,@erdem_r int,@tolga_o int
+declare @emrah_o int,@suleyman_o int,@musa_o int,@erdem_o int,@tolga_s int,@emrah_s int,@suleyman_s int,@musa_s int,@erdem_s int,@ibrahim_r int,@ibrahim_s int,@ibrahim_o int
+declare @rtoplam int,@otoplam int,@stoplam int,@tolga_n int,@emrah_n int,@suleyman_n int,@musa_n int,@erdem_n int,@ntoplam int,@ibrahim_n int
+
+
+set @a=(SELECT    count(*) fROM            araclar where sahip='ALD' and durumu='Aktif')
+set @o=(SELECT    count(*) fROM            araclar where sahip='OTP' and durumu='Aktif')
+set @kp=(SELECT    count(*) fROM            araclar where sahip='KAP' and durumu='Aktif')
+set @k=(SELECT    count(*) fROM            araclar where sahip='KON' and durumu='Aktif')
+set @aktif_adet=(SELECT    count(*) fROM            araclar where durumu='Aktif' )
+set @ay=(select datepart(mm,getdate()))
+set @yýl=(select year(getdate()))
+
+
+set @tarih1=('01.08.2016')/*Bulunulan ayýn baþlangýç tarihi  */
+set @tarih2=('01.09.2016')/* Bulunulan aydan sonraki ayýn baslangýç tarihi */
+
+set @bas=convert(datetime,@tarih1,103)
+set @son=convert(datetime,@tarih2,103)
+
+set @ibrahim_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Otoport' and (rezervasyon_tarih between @bas and @son))
+set @tolga_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Tolga Seker' and (rezervasyon_tarih between @bas and @son))
+set @emrah_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Emrah Emici'and (rezervasyon_tarih between @bas and @son))
+set @suleyman_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Suleyman Atabay'and (rezervasyon_tarih between @bas and @son))
+set @musa_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Fatih Dost'and (rezervasyon_tarih between @bas and @son))
+set @erdem_r=(SELECT    count(*) fROM            araclar where durumu='Rezerve' and rezerve_eden='Erdem Erken'and (rezervasyon_tarih between @bas and @son))
+set @rtoplam=(SELECT    count(*) fROM            araclar where durumu='Rezerve'and (rezervasyon_tarih between @bas and @son))
+
+set @ibrahim_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Otoport' and (rezervasyon_tarih between @bas and @son))
+set @tolga_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Tolga Seker' and (rz_onay_tarihi between @bas and @son))
+set @emrah_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Emrah Emici'and (rz_onay_tarihi between @bas and @son))
+set @suleyman_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Suleyman Atabay'and (rz_onay_tarihi between @bas and @son))
+set @musa_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Fatih Dost'and (rz_onay_tarihi between @bas and @son))
+set @erdem_o=(SELECT    count(*) fROM            araclar where durumu='Odeme' and rezerve_eden='Erdem Erken'and (rz_onay_tarihi between @bas and @son))
+set @otoplam=(SELECT    count(*) fROM            araclar where durumu='Odeme'and (rz_onay_tarihi between @bas and @son))
+
+set @ibrahim_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Otoport' and (rezervasyon_tarih between @bas and @son))
+set @tolga_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Tolga Seker' and (st_tarih between @bas and @son))
+set @emrah_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Emrah Emici'and (st_tarih between @bas and @son))
+set @suleyman_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Suleyman Atabay'and (st_tarih between @bas and @son))
+set @musa_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Fatih Dost'and (st_tarih between @bas and @son))
+set @erdem_s=(SELECT    count(*) fROM            araclar where durumu='Satýldý' and rezerve_eden='Erdem Erken'and (st_tarih between @bas and @son))
+set @stoplam=(SELECT    count(*) fROM            araclar where durumu='Satýldý'and (st_tarih between @bas and @son))
+
+set @ibrahim_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Otoport' and (rezervasyon_tarih between @bas and @son))
+set @tolga_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Tolga Seker' and (st_tarih between @bas and @son))
+set @emrah_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Emrah Emici'and (st_tarih between @bas and @son))
+set @suleyman_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Suleyman Atabay'and (st_tarih between @bas and @son))
+set @musa_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Fatih Dost'and (st_tarih between @bas and @son))
+set @erdem_n=(SELECT    count(*) fROM            araclar where durumu='Noter' and rezerve_eden='Erdem Erken'and (st_tarih between @bas and @son))
+set @ntoplam=(SELECT    count(*) fROM            araclar where durumu='Noter'and (st_tarih between @bas and @son))
+
+SELECT @a as Aldatmaz ,@kp as Kapital,@k as Konsinye,@o as Otoport,@aktif_adet as [Toplam Stok Sayýsý],@tolga_r as tolga_r,@emrah_r as emrah_r,@suleyman_r as suleyman_r,@musa_r as musa_r,@erdem_r as erdem_r,@tolga_o as tolga_o,@emrah_o as emrah_o,@suleyman_o as suleyman_o,@musa_o as musa_o,@erdem_o as erdem_o,@tolga_s as tolga_s,@emrah_s as emrah_s,@suleyman_s as suleyman_s,@musa_s as musa_s,@erdem_s as erdem_s,@ibrahim_r as ibrahim_r,@ibrahim_s as ibrahim_s,@ibrahim_o as ibrahim_o,@rtoplam as rtoplam,@otoplam as otoplam,@stoplam as stoplam,@ntoplam as ntoplam,@tolga_n as tolga_n,@emrah_n as emrah_n,@suleyman_n as suleyman_n,@ibrahim_n as ibrahim_n,@musa_n as musa_n,@erdem_n as erdem_n
